@@ -8,29 +8,45 @@
 
 import Foundation
 
-var str = readLine()
-
 print("Input: ")
 
+var str = readLine()
+print("--------------------")
+print("Input method:\n" +
+        "0 - number validator\n" +
+        "1 - lower validator\n" +
+        "2 - upper validator\n ")
+print("--------------------")
+var num = readLine()
+print("--------------------")
+
+//Создание базовой стратерии
 protocol BasicStrategy {
     func inputNumber()
     func inputLowerCase(input: String) -> Bool
     func inputUppercase(input: String) -> Bool
 }
 
+//Создание класса, который содержит функции базовой стратерии с прописанной логикой
 class IStrategy: BasicStrategy {
+    
+    //проверка, является ли введеное содержимое числом
     func inputNumber() {
         let possibleInt = str ?? ""
 
         if let convertedNumber = Int(possibleInt) {
             print("\(possibleInt) is an Int")
+        }else{
+            print("Is not an Int")
         }
         
     }
     
+    //проверка, является ли введеное содержимое в нижнем регистре
     func inputLowerCase(input: String) -> Bool {
         for str in input {
            if (!(str >= "a" && str <= "z") && !(str >= "а" && str <= "я") ) {
+            print("Is not an lower case")
             return false
            }
         }
@@ -38,9 +54,11 @@ class IStrategy: BasicStrategy {
         return true
     }
     
+    //проверка, является ли введеное содержимое в верхнем регистре
     func inputUppercase(input: String) -> Bool {
         for str in input {
            if (!(str >= "A" && str <= "Z") && !(str >= "А" && str <= "Я") ) {
+            print("Is not an uppercase")
             return false
            }
         }
@@ -59,9 +77,15 @@ class Main {
     }
     
     func makeAction() {
-        self.strategy.inputNumber()
-        self.strategy.inputLowerCase(input: str ?? "")
-        self.strategy.inputUppercase(input: str ?? "")
+        switch Int(num!) {
+        case 0:
+            self.strategy.inputNumber()
+        case 1:
+            self.strategy.inputLowerCase(input: str ?? "")
+        default:
+            self.strategy.inputUppercase(input: str ?? "")
+        }
+        
     }
     
     func changeStrategy(aStrategy: BasicStrategy) {
@@ -69,6 +93,7 @@ class Main {
     }
 }
 
+//let checkBoxs = 1
 let a = IStrategy()
 let p = Main(strategy: a)
 p.makeAction()
