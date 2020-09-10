@@ -82,8 +82,10 @@ class Main {
             self.strategy.inputNumber()
         case 1:
             self.strategy.inputLowerCase(input: str ?? "")
-        default:
+        case 2:
             self.strategy.inputUppercase(input: str ?? "")
+        default:
+            print("This method does not exist!")
         }
         
     }
@@ -93,7 +95,6 @@ class Main {
     }
 }
 
-//let checkBoxs = 1
 let a = IStrategy()
 let p = Main(strategy: a)
 p.makeAction()
