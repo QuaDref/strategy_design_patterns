@@ -21,15 +21,15 @@ class Input {
     func makeAction() {
         switch Int(num!) {
             case 0:
-                main.Set(strategy: InputNumber())
+                main.set(strategy: InputNumber())
             case 1:
-                main.Set(strategy: InputLowerCase())
+                main.set(strategy: InputLowerCase())
             case 2:
-                main.Set(strategy: InputUppercase())
+                main.set(strategy: InputUppercase())
             default:
                 print("This method does not exist!")
             }
-        main.Operation(input: str!)
+        main.operation(input: str!)
         }
 }
 
@@ -41,7 +41,7 @@ class InputNumber: Validator {
     func isValid(input: String) {
         let possibleInt = str ?? ""
 
-        if let convertedNumber = Int(possibleInt) {
+        if let _ = Int(possibleInt) {
             print("\(possibleInt) is an Int")
         }else{
             print("Is not an Int")
@@ -51,25 +51,23 @@ class InputNumber: Validator {
 
 class InputLowerCase: Validator {
     func isValid(input: String) {
-        for str in input {
-           if (!(str >= "a" && str <= "z") && !(str >= "а" && str <= "я") ) {
+        
+        if input == input.lowercased() {
+            print("\(str) is an lower case")
+        }else {
             print("Is not an lower case")
-            return;
-           }
         }
-        print("\(str) is an lower case")
     }
 }
 
 class InputUppercase: Validator {
     func isValid(input: String) {
-        for str in input {
-           if (!(str >= "A" && str <= "Z") && !(str >= "А" && str <= "Я") ) {
+        
+        if input == input.uppercased() {
+            print("\(str) is an uppercase")
+        }else {
             print("Is not an uppercase")
-            return;
-           }
         }
-        print("\(str) is an uppercase")
     }
 }
 
@@ -77,16 +75,11 @@ class Main {
 
     var strategy: Validator?
     
-    func Main(strategy: Validator)
-    {
+    func set(strategy: Validator) {
         self.strategy = strategy
     }
     
-    func Set(strategy: Validator) {
-        self.strategy = strategy
-    }
-    
-    func Operation(input: String) {
+    func operation(input: String) {
         self.strategy?.isValid(input: input)
     }
 
