@@ -6,32 +6,39 @@
 //  Copyright © 2020 Quadref. All rights reserved.
 //
 
-import Foundation
 
 print("Input: ")
-
 var str = readLine()
 print("--------------------")
 print("Input method:\n" +
         "0 - number validator\n" +
         "1 - lower validator\n" +
         "2 - upper validator\n ")
-print("--------------------")
 var num = readLine()
-print("--------------------")
 
-//Создание базовой стратерии
-protocol BasicStrategy {
-    func inputNumber()
-    func inputLowerCase(input: String) -> Bool
-    func inputUppercase(input: String) -> Bool
+class Input {
+    var main = Main()
+    func makeAction() {
+        switch Int(num!) {
+            case 0:
+                main.Set(strategy: InputNumber())
+            case 1:
+                main.Set(strategy: InputLowerCase())
+            case 2:
+                main.Set(strategy: InputUppercase())
+            default:
+                print("This method does not exist!")
+            }
+        main.Operation(input: str!)
+        }
 }
 
-//Создание класса, который содержит функции базовой стратерии с прописанной логикой
-class IStrategy: BasicStrategy {
-    
-    //проверка, является ли введеное содержимое числом
-    func inputNumber() {
+protocol Validator {
+    func isValid(input: String)
+}
+
+class InputNumber: Validator {
+    func isValid(input: String) {
         let possibleInt = str ?? ""
 
         if let convertedNumber = Int(possibleInt) {
@@ -39,62 +46,52 @@ class IStrategy: BasicStrategy {
         }else{
             print("Is not an Int")
         }
-        
     }
-    
-    //проверка, является ли введеное содержимое в нижнем регистре
-    func inputLowerCase(input: String) -> Bool {
+}
+
+class InputLowerCase: Validator {
+    func isValid(input: String) {
         for str in input {
            if (!(str >= "a" && str <= "z") && !(str >= "а" && str <= "я") ) {
             print("Is not an lower case")
-            return false
+            return;
            }
         }
         print("\(str) is an lower case")
-        return true
     }
-    
-    //проверка, является ли введеное содержимое в верхнем регистре
-    func inputUppercase(input: String) -> Bool {
+}
+
+class InputUppercase: Validator {
+    func isValid(input: String) {
         for str in input {
            if (!(str >= "A" && str <= "Z") && !(str >= "А" && str <= "Я") ) {
             print("Is not an uppercase")
-            return false
+            return;
            }
         }
         print("\(str) is an uppercase")
-        return true
     }
-    
 }
 
-
 class Main {
-    var strategy: BasicStrategy
+
+    var strategy: Validator?
     
-    init(strategy: BasicStrategy) {
+    func Main(strategy: Validator)
+    {
         self.strategy = strategy
     }
     
-    func makeAction() {
-        switch Int(num!) {
-        case 0:
-            self.strategy.inputNumber()
-        case 1:
-            self.strategy.inputLowerCase(input: str ?? "")
-        case 2:
-            self.strategy.inputUppercase(input: str ?? "")
-        default:
-            print("This method does not exist!")
-        }
-        
+    func Set(strategy: Validator) {
+        self.strategy = strategy
     }
     
-    func changeStrategy(aStrategy: BasicStrategy) {
-        self.strategy = aStrategy
+    func Operation(input: String) {
+        self.strategy?.isValid(input: input)
     }
+
 }
 
-let a = IStrategy()
-let p = Main(strategy: a)
-p.makeAction()
+
+var inputUsr = Input()
+inputUsr.makeAction()
